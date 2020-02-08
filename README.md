@@ -1,13 +1,13 @@
 
-#spring boot开始了
+# spring boot开始了
 
 加油加油加油
 
 
 
-#脚本 
+# 脚本 
 
-##创建user表
+## 创建user表
 ```sql
 CREATE TABLE `user` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
