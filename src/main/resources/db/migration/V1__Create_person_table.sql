@@ -1,12 +1,3 @@
-
-# spring boot开始了
-
-加油加油加油
-
-# 脚本 
-
-## 创建user表
-```sql
 CREATE TABLE `user` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `account_id` varchar(100) DEFAULT NULL,
@@ -17,4 +8,4 @@ CREATE TABLE `user` (
   `bio` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8
-```
+
