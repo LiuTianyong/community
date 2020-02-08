@@ -54,7 +54,7 @@ public class AuthorizeController {
 
         String accessToken = gitHupProvider.getAccessToken(accessTokenDTO);
         GithupUser githupUser = gitHupProvider.getUser(accessToken);
-        if (githupUser != null) {
+        if (githupUser != null && githupUser.getId() != null) {
 
             User user = new User();
             String token = UUID.randomUUID().toString();
