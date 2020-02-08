@@ -5,7 +5,8 @@
 
 
 
-#脚本
+#脚本 
+
 ##创建user表
 ```sql
 CREATE TABLE `user` (
