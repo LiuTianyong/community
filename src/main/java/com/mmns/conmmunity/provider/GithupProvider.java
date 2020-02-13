@@ -8,6 +8,9 @@ import okhttp3.*;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
 
 @Component
 public class GithupProvider {
@@ -16,15 +19,25 @@ public class GithupProvider {
         MediaType mediaType = MediaType.get("application/json; charset=utf-8");
         OkHttpClient client = new OkHttpClient();
 
-        RequestBody body = RequestBody.create(mediaType, JSON.toJSONString(accessTokenDTO));
+        System.out.println(accessTokenDTO);
+
+        Map<String,Object> map = new HashMap<>();
+        map.put("client_id",accessTokenDTO.getClientId());
+        map.put("client_secret",accessTokenDTO.getClientSecret());
+        map.put("code",accessTokenDTO.getCode());
+        map.put("redirect_uri",accessTokenDTO.getRedirectUri());
+        map.put("state",accessTokenDTO.getState());
+
+        //将对象转成json使用fastjson
+        RequestBody body = RequestBody.create(JSON.toJSONString(map),mediaType);
+
         Request request = new Request.Builder()
                 .url("https://github.com/login/oauth/access_token")
                 .post(body)
                 .build();
         try (Response response = client.newCall(request).execute()) {
-            String string = response.body().string();
-            String token = string.split("&")[0].split("=")[1];
-            System.out.println(token);
+            String result=response.body().string();
+            String token=result.split("&")[0].split("=")[1];
             return token;
         } catch (Exception e) {
             e.printStackTrace();

@@ -40,20 +40,25 @@ public class AuthorizeController {
                            @RequestParam(name = "state") String state,
                            HttpServletRequest request,
                            HttpServletResponse response) throws IOException {
+
         AccessTokenDTO accessTokenDTO = new AccessTokenDTO();
 
 //        System.out.println(clientId);
 //        System.out.println(clientSecret);
 //        System.out.println(redirectUri);
 
-        accessTokenDTO.setClient_id(clientId);
+        accessTokenDTO.setClientId(clientId);
         accessTokenDTO.setCode(code);
-        accessTokenDTO.setClient_secret(clientSecret);
-        accessTokenDTO.setRedirect_uri(redirectUri);
+        accessTokenDTO.setClientSecret(clientSecret);
+        accessTokenDTO.setRedirectUri(redirectUri);
         accessTokenDTO.setState(state);
+
+        System.out.println(accessTokenDTO);
 
         String accessToken = gitHupProvider.getAccessToken(accessTokenDTO);
         GithupUser githupUser = gitHupProvider.getUser(accessToken);
+
+        System.out.println(githupUser);
         if (githupUser != null && githupUser.getId() != null) {
 
             User user = new User();
@@ -63,6 +68,8 @@ public class AuthorizeController {
             user.setAccountId(String.valueOf(githupUser.getId()));
             user.setGmtCreate(System.currentTimeMillis());
             user.setGmtModified(user.getGmtCreate());
+            user.setBio(githupUser.getBio());
+            user.setAvatarUrl(githupUser.getAvatarUrl());
 
             userMapper.insert(user);
             response.addCookie(new Cookie("token", token));
