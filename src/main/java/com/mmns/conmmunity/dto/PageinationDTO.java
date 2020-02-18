@@ -17,15 +17,8 @@ public class PageinationDTO {
     private List<Integer> pages = new ArrayList<>();
     private Integer totalPage;
 
-    public void setPageIntaion(Integer totalCount, Integer page, Integer size) {
-
-        if (totalCount % size == 0) {
-            totalPage = totalCount / size;
-        } else {
-            totalPage = totalCount / size + 1;
-        }
-
-
+    public void setPageIntaion(Integer totalPage, Integer page) {
+        this.totalPage = totalPage;
         this.page = page;
         pages.add(page);
         for (int i = 1; i <= 3; i++) {
@@ -56,7 +49,7 @@ public class PageinationDTO {
             showFirstPage = true;
         }
         //是否展示最后一页
-        if (pages.contains(totalCount)) {
+        if (pages.contains(totalPage)) {
             showEndPage = false;
         } else {
             showEndPage = true;
