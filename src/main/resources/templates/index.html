@@ -17,7 +17,6 @@
             <h2><span class="glyphicon glyphicon-list" aria-hidden="true"></span>发现</h2>
             <hr>
 
-
             <div class="media" th:each="question : ${pageination.questions}">
                 <div class="media-left">
                     <a href="#">
@@ -26,10 +25,15 @@
                     </a>
                 </div>
                 <div class="media-body">
-                    <h4 class="media-heading" th:text="${question.title}"></h4>
+                    <h4 class="media-heading">
+                        <a th:href="@{'/question/'+ ${question.id}}" th:text="${question.title}"></a>
+                    </h4>
+
                     <span th:text="${question.description}"></span> <br>
                     <span class="text-desc"
-                          th:text="${question.commentCount} +'个回复 · '+  ${question.viewCount} +'次浏览 · '+ ${#dates.format(question.getGmtCreate(),'yyyy-MM-dd HH:mm')}"></span>
+                          th:text="${question.commentCount} +'个回复 · '+  ${question.viewCount} +'次浏览 · '+ ${#dates.format(question.getGmtCreate(),'yyyy-MM-dd HH:mm')}">
+
+                    </span>
                 </div>
             </div>
             <nav aria-label="Page navigation">

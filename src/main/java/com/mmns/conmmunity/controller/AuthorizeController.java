@@ -5,6 +5,7 @@ import com.mmns.conmmunity.dto.GithupUser;
 import com.mmns.conmmunity.mapper.UserMapper;
 import com.mmns.conmmunity.model.User;
 import com.mmns.conmmunity.provider.GithupProvider;
+import com.mmns.conmmunity.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
@@ -23,6 +24,8 @@ public class AuthorizeController {
 
     @Autowired
     private GithupProvider gitHupProvider;
+    @Autowired
+    private UserService userService;
 
     // 取配置文件内key对应的value值
     @Value("${githup.client.id}")
@@ -32,8 +35,6 @@ public class AuthorizeController {
     @Value("${githup.redirect.uri}")
     private String redirectUri;
 
-    @Autowired
-    private UserMapper userMapper;
 
     @GetMapping("/callback")
     public String callback(@RequestParam(name = "code") String code,
@@ -42,10 +43,6 @@ public class AuthorizeController {
                            HttpServletResponse response) throws IOException {
 
         AccessTokenDTO accessTokenDTO = new AccessTokenDTO();
-
-//        System.out.println(clientId);
-//        System.out.println(clientSecret);
-//        System.out.println(redirectUri);
 
         accessTokenDTO.setClientId(clientId);
         accessTokenDTO.setCode(code);
@@ -66,12 +63,11 @@ public class AuthorizeController {
             user.setToken(token);
             user.setName(githupUser.getName());
             user.setAccountId(String.valueOf(githupUser.getId()));
-            user.setGmtCreate(System.currentTimeMillis());
-            user.setGmtModified(user.getGmtCreate());
+
             user.setBio(githupUser.getBio());
             user.setAvatarUrl(githupUser.getAvatarUrl());
+            userService.createOrUpdate(user);
 
-            userMapper.insert(user);
             response.addCookie(new Cookie("token", token));
             // 登陆成功 写入Cookies 和 session
 
@@ -82,6 +78,18 @@ public class AuthorizeController {
             // 登陆失败 重新登陆
             return "redirect:/";
         }
+    }
+
+    @GetMapping("/logout")
+    public String logout(HttpServletRequest request,
+                         HttpServletResponse response
+                         ){
+        request.getSession().removeAttribute("user");
+        Cookie cookie = new Cookie("token",null);
+        cookie.setMaxAge(0);
+        response.addCookie(cookie);
+
+        return "redirect:/";
     }
 
 }
