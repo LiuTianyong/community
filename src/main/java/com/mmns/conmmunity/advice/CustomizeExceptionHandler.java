@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.mmns.conmmunity.dto.ResultDTO;
 import com.mmns.conmmunity.exception.CustomizeErrorCode;
 import com.mmns.conmmunity.exception.CustomizeException;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -15,21 +16,13 @@ import java.io.IOException;
 import java.io.PrintWriter;
 
 /**
- * @PackgeName: com.mmns.conmmunity.advice
- * @Author: LiuTianyong
- * Date: 2020/2/20 13:56
- * @Version:
- * @Description:
+ * Created by codedrinker on 2019/5/28.
  */
-
 @ControllerAdvice
-public class CustomizeEXceptionHandler {
+@Slf4j
+public class CustomizeExceptionHandler {
     @ExceptionHandler(Exception.class)
-    ModelAndView handle(Throwable e, Model model,
-                        HttpServletRequest request,
-                        HttpServletResponse response) {
-
-        // 得到请求类型
+    ModelAndView handle(Throwable e, Model model, HttpServletRequest request, HttpServletResponse response) {
         String contentType = request.getContentType();
         if ("application/json".equals(contentType)) {
             ResultDTO resultDTO;
@@ -37,6 +30,7 @@ public class CustomizeEXceptionHandler {
             if (e instanceof CustomizeException) {
                 resultDTO = ResultDTO.errorOf((CustomizeException) e);
             } else {
+                log.error("handle error", e);
                 resultDTO = ResultDTO.errorOf(CustomizeErrorCode.SYS_ERROR);
             }
             try {
@@ -47,7 +41,6 @@ public class CustomizeEXceptionHandler {
                 writer.write(JSON.toJSONString(resultDTO));
                 writer.close();
             } catch (IOException ioe) {
-
             }
             return null;
         } else {
@@ -55,6 +48,7 @@ public class CustomizeEXceptionHandler {
             if (e instanceof CustomizeException) {
                 model.addAttribute("message", e.getMessage());
             } else {
+                log.error("handle error", e);
                 model.addAttribute("message", CustomizeErrorCode.SYS_ERROR.getMessage());
             }
             return new ModelAndView("error");

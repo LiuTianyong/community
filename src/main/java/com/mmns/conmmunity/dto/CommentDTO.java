@@ -4,11 +4,7 @@ import com.mmns.conmmunity.model.User;
 import lombok.Data;
 
 /**
- * @PackgeName: com.mmns.conmmunity.dto
- * @Author: LiuTianyong
- * Date: 2020/2/20 18:18
- * @Version:
- * @Description:
+ * Created by codedrinker on 2019/6/2.
  */
 @Data
 public class CommentDTO {

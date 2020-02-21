@@ -11,16 +11,11 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpServletRequest;
 
 /**
- * @PackgeName: com.mmns.conmmunity.controller
- * @Author: LiuTianyong
- * Date: 2020/2/20 16:14
- * @Version:
- * @Description:
+ * Created by codedrinker on 2019/5/28.
  */
 @Controller
 @RequestMapping("${server.error.path:${error.path:/error}}")
 public class CustomizeErrorController implements ErrorController {
-
 
     @Override
     public String getErrorPath() {

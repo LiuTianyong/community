@@ -1,13 +1,8 @@
 package com.mmns.conmmunity.exception;
 
 /**
- * @PackgeName: com.mmns.conmmunity.exception
- * @Author: LiuTianyong
- * Date: 2020/2/20 14:46
- * @Version:
- * @Description:
+ * Created by codedrinker on 2019/5/28.
  */
-
 public enum CustomizeErrorCode implements ICustomizeErrorCode {
 
     QUESTION_NOT_FOUND(2001, "你找到问题不在了，要不要换个试试？"),

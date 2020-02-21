@@ -1,11 +1,7 @@
 package com.mmns.conmmunity.exception;
 
 /**
- * @PackgeName: com.mmns.conmmunity.exception
- * @Author: LiuTianyong
- * Date: 2020/2/20 14:26
- * @Version:
- * @Description:
+ * Created by codedrinker on 2019/5/28.
  */
 public class CustomizeException extends RuntimeException {
     private String message;

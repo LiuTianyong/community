@@ -1,11 +1,7 @@
 package com.mmns.conmmunity.enums;
 
 /**
- * @PackgeName: com.mmns.conmmunity.enums
- * @Author: LiuTianyong
- * Date: 2020/2/20 22:49
- * @Version:
- * @Description:
+ * Created by codedrinker on 2019/6/14.
  */
 public enum NotificationTypeEnum {
     REPLY_QUESTION(1, "回复了问题"),

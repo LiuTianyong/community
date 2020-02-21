@@ -5,11 +5,7 @@ import com.mmns.conmmunity.exception.CustomizeException;
 import lombok.Data;
 
 /**
- * @PackgeName: com.mmns.conmmunity.dto
- * @Author: LiuTianyong
- * Date: 2020/2/20 16:10
- * @Version:
- * @Description:
+ * Created by codedrinker on 2019/5/31.
  */
 @Data
 public class ResultDTO<T> {

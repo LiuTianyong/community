@@ -1,17 +1,9 @@
 package com.mmns.conmmunity.exception;
 
 /**
- * @PackgeName: com.mmns.conmmunity.exception
- * @Author: LiuTianyong
- * Date: 2020/2/20 14:44
- * @Version:
- * @Description:
+ * Created by codedrinker on 2019/5/28.
  */
-public interface ICustomizeErrorCode  {
-
-    String message = null;
-
+public interface ICustomizeErrorCode {
     String getMessage() ;
     Integer getCode();
-
 }

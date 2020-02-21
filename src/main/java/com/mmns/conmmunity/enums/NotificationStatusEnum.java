@@ -1,11 +1,7 @@
 package com.mmns.conmmunity.enums;
 
 /**
- * @PackgeName: com.mmns.conmmunity.enums
- * @Author: LiuTianyong
- * Date: 2020/2/20 22:50
- * @Version:
- * @Description:
+ * Created by codedrinker on 2019/6/14.
  */
 public enum NotificationStatusEnum {
     UNREAD(0), READ(1);

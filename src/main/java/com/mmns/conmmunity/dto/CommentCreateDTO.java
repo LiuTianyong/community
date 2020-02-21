@@ -3,11 +3,7 @@ package com.mmns.conmmunity.dto;
 import lombok.Data;
 
 /**
- * @PackgeName: com.mmns.conmmunity.dto
- * @Author: LiuTianyong
- * Date: 2020/2/20 22:58
- * @Version:
- * @Description:
+ * Created by codedrinker on 2019/5/30.
  */
 @Data
 public class CommentCreateDTO {

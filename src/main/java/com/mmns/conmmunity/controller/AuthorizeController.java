@@ -1,95 +1,83 @@
 package com.mmns.conmmunity.controller;
 
 import com.mmns.conmmunity.dto.AccessTokenDTO;
-import com.mmns.conmmunity.dto.GithupUser;
-import com.mmns.conmmunity.mapper.UserMapper;
+import com.mmns.conmmunity.dto.GithubUser;
 import com.mmns.conmmunity.model.User;
-import com.mmns.conmmunity.provider.GithupProvider;
+import com.mmns.conmmunity.provider.GithubProvider;
 import com.mmns.conmmunity.service.UserService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import javax.naming.Name;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 import java.util.UUID;
 
+
+
 @Controller
+@Slf4j
 public class AuthorizeController {
 
     @Autowired
-    private GithupProvider gitHupProvider;
-    @Autowired
-    private UserService userService;
+    private GithubProvider githubProvider;
 
-    // 取配置文件内key对应的value值
-    @Value("${githup.client.id}")
+    @Value("${github.client.id}")
     private String clientId;
-    @Value("${githup.client.secret}")
+
+    @Value("${github.client.secret}")
     private String clientSecret;
-    @Value("${githup.redirect.uri}")
+
+    @Value("${github.redirect.uri}")
     private String redirectUri;
 
+    @Autowired
+    private UserService userService;
 
     @GetMapping("/callback")
     public String callback(@RequestParam(name = "code") String code,
                            @RequestParam(name = "state") String state,
-                           HttpServletRequest request,
-                           HttpServletResponse response) throws IOException {
-
+                           HttpServletResponse response) {
         AccessTokenDTO accessTokenDTO = new AccessTokenDTO();
-
-        accessTokenDTO.setClientId(clientId);
+        accessTokenDTO.setClient_id(clientId);
+        accessTokenDTO.setClient_secret(clientSecret);
         accessTokenDTO.setCode(code);
-        accessTokenDTO.setClientSecret(clientSecret);
-        accessTokenDTO.setRedirectUri(redirectUri);
+        accessTokenDTO.setRedirect_uri(redirectUri);
         accessTokenDTO.setState(state);
-
-        System.out.println(accessTokenDTO);
-
-        String accessToken = gitHupProvider.getAccessToken(accessTokenDTO);
-        GithupUser githupUser = gitHupProvider.getUser(accessToken);
-
-        System.out.println(githupUser);
-        if (githupUser != null && githupUser.getId() != null) {
-
+        String accessToken = githubProvider.getAccessToken(accessTokenDTO);
+        GithubUser githubUser = githubProvider.getUser(accessToken);
+        if (githubUser != null && githubUser.getId() != null) {
             User user = new User();
             String token = UUID.randomUUID().toString();
             user.setToken(token);
-            user.setName(githupUser.getName());
-            user.setAccountId(String.valueOf(githupUser.getId()));
-
-            user.setBio(githupUser.getBio());
-            user.setAvatarUrl(githupUser.getAvatarUrl());
+            user.setName(githubUser.getName());
+            user.setAccountId(String.valueOf(githubUser.getId()));
+            user.setAvatarUrl(githubUser.getAvatarUrl());
             userService.createOrUpdate(user);
-
-            response.addCookie(new Cookie("token", token));
-            // 登陆成功 写入Cookies 和 session
-
-            request.getSession().setAttribute("user", githupUser);
-            // 跳转
+            Cookie cookie = new Cookie("token", token);
+            cookie.setMaxAge(60 * 60 * 24 * 30 * 6);
+            response.addCookie(cookie);
             return "redirect:/";
         } else {
-            // 登陆失败 重新登陆
+            log.error("callback get github error,{}", githubUser);
+            // 登录失败，重新登录
             return "redirect:/";
         }
     }
 
     @GetMapping("/logout")
     public String logout(HttpServletRequest request,
-                         HttpServletResponse response
-                         ){
+                         HttpServletResponse response) {
         request.getSession().removeAttribute("user");
-        Cookie cookie = new Cookie("token",null);
+        Cookie cookie = new Cookie("token", null);
         cookie.setMaxAge(0);
         response.addCookie(cookie);
-
         return "redirect:/";
     }
-
 }

@@ -20,15 +20,11 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
- * @PackgeName: com.mmns.conmmunity.service
- * @Author: LiuTianyong
- * Date: 2020/2/20 21:09
- * @Version:
- * @Description:
+ * Created by codedrinker on 2019/5/31.
  */
-
 @Service
 public class CommentService {
+
     @Autowired
     private CommentMapper commentMapper;
 

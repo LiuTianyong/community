@@ -1,11 +1,7 @@
 package com.mmns.conmmunity.enums;
 
 /**
- * @PackgeName: com.mmns.conmmunity.enums
- * @Author: LiuTianyong
- * Date: 2020/2/20 21:13
- * @Version:
- * @Description:
+ * Created by codedrinker on 2019/5/31.
  */
 public enum CommentTypeEnum {
     QUESTION(1),
